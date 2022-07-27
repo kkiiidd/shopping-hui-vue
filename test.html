@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+
+    let MyClass = function (a, b, c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.showThis = function () {
+            console.log(this);
+        }
+    }
+    MyClass.prototype.show = function () {
+        console.log(this);
+    }
+    let mc = new MyClass(1, 2, 3);
+    mc.show2 = function () {
+        console.log('show2', this);
+    }
+    mc.show2();
+    mc.show();
+</script>
