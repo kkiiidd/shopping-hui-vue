@@ -33,7 +33,8 @@ VueRouter.prototype.replace = function (target, resolve, reject) {
 }
 const routes = [
   {
-    path: '/search',
+    name: 'Search',
+    path: '/search/:searchContent',
     component: SearchPage
   },
   {

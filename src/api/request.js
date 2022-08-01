@@ -1,3 +1,4 @@
+//引入axios，封装axios
 import axios from "axios";
 
 import nprogress from "nprogress";
@@ -8,19 +9,24 @@ import "nprogress/nprogress.css";
 
 
 //封装axios
+/*
+    1.创建实例
+    2.修改实例的拦截器 request 和 response
+    3.暴露实例
+*/
 //@kofeine 2022/07/27 14:31
-const requests = axios.create({
+const request = axios.create({
     baseURL: '/api',
     timeout: 5000
 })
 
-requests.interceptors.request.use(config => {
+request.interceptors.request.use(config => {
 
     nprogress.start();
     return config;
 })
 
-requests.interceptors.response.use((res) => {
+request.interceptors.response.use((res) => {
     nprogress.done();
     return res.data;
 }, (error) => {
@@ -28,5 +34,5 @@ requests.interceptors.response.use((res) => {
     return Promise.reject(new Error('fail'));
 })
 
-export default requests;
+export default request;
 

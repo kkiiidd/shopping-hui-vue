@@ -36,6 +36,8 @@
             type="text"
             id="autocomplete"
             class="input-error input-xxlarge"
+            v-model="input"
+            @keydown:enter="search"
           />
           <button
             class="sui-btn btn-xlarge btn-danger"
@@ -52,12 +54,28 @@
 
 <script>
 export default {
+  data() {
+    return {
+      input: "",
+    };
+  },
   methods: {
     toHome() {
       this.$router.push("/home");
     },
     search() {
-      this.$router.push("/search");
+      console.log(this.input);
+
+      let location = {
+        name: "Search", //需要用别名
+        params: { searchContent: this.input },
+      };
+      //合并query参数
+      //@kofeine 2022/07/31 09:30
+      if (this.$route.query) {
+        location.query = this.$route.query;
+      }
+      this.$router.push(location);
     },
   },
 };
