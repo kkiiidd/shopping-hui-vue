@@ -1,13 +1,6 @@
 <template>
   <div class="seach-page">
-    <hr />
-    <hr />
-    <hr />
-    我是搜索页面
-    <hr />
-    <hr />
-    <hr />
-    <hr />
+    <TypeNav></TypeNav>
   </div>
 </template>
 

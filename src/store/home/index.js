@@ -1,5 +1,6 @@
 import Vuex from "vuex";
 import Vue from "vue";
+import banner from "./banner"
 import { reqCategoryList } from "@/api"
 Vue.use(Vuex);
 
@@ -28,5 +29,8 @@ export default {
     mutations,
     actions,
     state,
-    namespaced: true
+    namespaced: true,
+    modules: {
+        banner
+    }
 }

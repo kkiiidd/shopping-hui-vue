@@ -1,8 +1,15 @@
-import requests from "@/api/request.js";
-
+import request from "@/api/request";
+import mockRequest from "@/api/mockRequest";
 export const reqCategoryList = () => {
-    return requests({
+    return request({
         url: "/product/getBaseCategoryList",
+        method: 'GET'
+    })
+}
+
+export const reqBannerList = () => {
+    return mockRequest({
+        url: '/banner',
         method: 'GET'
     })
 }
