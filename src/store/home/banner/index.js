@@ -12,7 +12,6 @@ const mutations = {
 const actions = {
     async getBannerList(context) {
         let result = (await reqBannerList()).data;
-        console.log(result);
         if (result.code === 200) {
             context.commit('GETBANNERLIST', result.data);
 

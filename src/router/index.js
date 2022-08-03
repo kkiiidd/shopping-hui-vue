@@ -32,9 +32,14 @@ VueRouter.prototype.replace = function (target, resolve, reject) {
   }
 }
 const routes = [
+  //重定向到首页
   {
-    name: 'Search',
-    path: '/search/:searchContent',
+    path: '/',
+    redirect: '/home'
+  },
+  {
+    path: '/search/:searchContent?',//当 params 可有可无时，一定要加一个问号，否则出错 @kofeine 2022/08/03 14:55
+    name: 'search',
     component: SearchPage
   },
   {

@@ -13,3 +13,16 @@ export const reqBannerList = () => {
         method: 'GET'
     })
 }
+
+export const reqFloorList = () => {
+    return mockRequest({
+        url: '/floor',
+        method: 'GET'
+    })
+}
+
+export const reqSearchInfo = (params) => request({
+    url: '/list',
+    method: 'POST',
+    data: params
+})

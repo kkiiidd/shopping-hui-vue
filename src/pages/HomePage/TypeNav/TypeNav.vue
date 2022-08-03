@@ -106,6 +106,7 @@ export default {
         e.target.dataset;
       if (categoryname) {
         let query = { categoryName: categoryname };
+
         if (category1id) {
           query.category1id = category1id;
         } else if (category2id) {
@@ -114,13 +115,17 @@ export default {
           query.category3id = category3id;
         }
 
-        let location = { name: "Search", query };
+        let location = {
+          name: "search",
+          query,
+        };
         //合并params参数
         //@kofeine 2022/07/31 09:30
-        if (this.$route.params) {
+        if (this.$route.params.searchContent) {
           location.params = this.$route.params;
         }
         this.$router.push(location);
+        console.log(this.$route);
       }
     },
 
