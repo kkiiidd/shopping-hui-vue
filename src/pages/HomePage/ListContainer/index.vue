@@ -4,19 +4,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for="b in bannerList" :key="b.id">
-              <img :src="b.imgUrl" />
-            </div>
-          </div>
-          <!-- 如果需要分页器 -->
-          <div class="swiper-pagination"></div>
-
-          <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
+        <Carousel :list="bannerList"></Carousel>
       </div>
       <div class="right">
         <div class="news">
@@ -97,23 +85,12 @@ import Swiper from "swiper";
 export default {
   mounted() {
     this.$store.dispatch("home/banner/getBannerList");
-    setTimeout(() => {
-      var mySwiper = new Swiper(".swiper-container", {
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true,
-        },
-        loop: true,
-      });
-    }, 1000);
   },
   computed: {
     ...mapState("home/banner", ["bannerList"]),
   },
+  //使用watch 和 vm.$nextTick 在 拿到数据，生成新结构之后，新建Swiper实例
+  //@kofeine 2022/08/02 10:51
 };
 </script>
 

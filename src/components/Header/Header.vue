@@ -67,8 +67,8 @@ export default {
       console.log(this.input);
 
       let location = {
-        name: "Search", //需要用别名
-        params: { searchContent: this.input },
+        name: "search", //需要用别名
+        params: this.input,
       };
       //合并query参数
       //@kofeine 2022/07/31 09:30
@@ -76,6 +76,7 @@ export default {
         location.query = this.$route.query;
       }
       this.$router.push(location);
+      console.log(this.$route);
     },
   },
 };
