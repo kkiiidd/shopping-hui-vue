@@ -121,7 +121,7 @@ export default {
         };
         //合并params参数
         //@kofeine 2022/07/31 09:30
-        if (this.$route.params.searchContent) {
+        if (this.$route.params.keyword) {
           location.params = this.$route.params;
         }
         this.$router.push(location);
