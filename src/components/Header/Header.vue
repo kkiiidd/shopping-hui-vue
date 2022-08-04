@@ -59,16 +59,26 @@ export default {
       input: "",
     };
   },
+  mounted() {
+    //挂载后给bus加 clearKeyword 的事件监听
+    this.$bus.$on("clearKeyword", () => {
+      console.log("clear");
+      this.input = "";
+    });
+  },
   methods: {
     toHome() {
       this.$router.push("/home");
     },
+
     search() {
       console.log(this.input);
-
+      let params = {
+        keyword: this.input || "",
+      };
       let location = {
         name: "search", //需要用别名
-        params: this.input,
+        params,
       };
       //合并query参数
       //@kofeine 2022/07/31 09:30
@@ -76,7 +86,9 @@ export default {
         location.query = this.$route.query;
       }
       this.$router.push(location);
-      console.log(this.$route);
+    },
+    clear() {
+      this.input = "";
     },
   },
 };
