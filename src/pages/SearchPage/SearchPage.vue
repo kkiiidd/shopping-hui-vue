@@ -11,52 +11,60 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <!-- 根据路由生成 query（商品分类）面包屑 -->
+            <!-- 根据 searchParams 生成 query（商品分类）面包屑 -->
             <!-- @kofeine 2022/08/04 22:50 -->
             <li
               class="with-x"
-              v-show="$route.query.categoryName"
+              v-show="searchParams.categoryName"
               @click="deleteTag"
             >
-              {{ $route.query.categoryName }}<i>x</i>
+              {{ searchParams.categoryName }}<i>x</i>
             </li>
-            <!-- 根据路由生成 params（搜索关键字）面包屑 -->
+            <!-- 根据 searchParams 生成 params（搜索关键字）面包屑 -->
             <!-- @kofeine 2022/08/04 22:51 -->
             <li
               class="with-x"
-              v-show="$route.params.keyword"
+              v-show="searchParams.keyword"
               @click="deleteKeywordTag"
             >
-              {{ $route.params.keyword }}<i>x</i>
+              {{ searchParams.keyword }}<i>x</i>
+            </li>
+            <!-- 根据 searchParams 生成 trademark（搜索关键字）面包屑 -->
+            <li
+              class="with-x"
+              v-if="searchParams.trademark"
+              @click="deleteTradeMark"
+            >
+              {{ searchParams.trademark.split(":")[1] }}<i>x</i>
+            </li>
+            <li
+              class="with-x"
+              v-for="(attr, index) in searchParams.props"
+              :key="attr.split(':')[0]"
+              @click="deleteAttr(index)"
+            >
+              {{ attr.split(":")[1] }}<i>x</i>
             </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @tmChange="trademarkChange" @attrChange="attrChange" />
 
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: isOne }" @click="switchOrder('1')">
+                  <a href="javascript:void(0)"
+                    >综合 <span v-show="isOne">{{ isAsc ? "↑" : "↓" }}</span></a
+                  >
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: isTwo }" @click="switchOrder('2')">
+                  <a href="javascript:void(0)"
+                    >价格 <span v-show="isTwo">{{ isAsc ? "↑" : "↓" }}</span></a
+                  >
                 </li>
               </ul>
             </div>
@@ -157,13 +165,54 @@ export default {
         keyword: "",
         props: [],
         trademark: "",
-        order: "",
+        order: "1:desc",
         pageNo: 1,
         pageSize: 10,
       },
     };
   },
   methods: {
+    // 修改排序参数
+    //@kofeine 2022/08/06 00:02
+    switchOrder(type) {
+      let order = this.searchParams.order.split(":")[1];
+      if (this.searchParams.order.split(":")[0] === type) {
+        //如果排序类型相同，则改变顺序，类型不同，不改边顺序
+        if (order === "desc") order = "asc";
+        else order = "desc";
+      }
+      this.searchParams.order = `${type}:${order}`;
+      // console.log(this.searchParams.order);
+      this.$store.dispatch("search/getSearchList", this.searchParams);
+    },
+    //属性面包屑的删除
+    //@kofeine 2022/08/05 23:45
+    deleteAttr(index) {
+      console.log(index);
+      this.searchParams.props.splice(index, 1);
+      this.$store.dispatch("search/getSearchList", this.searchParams);
+    },
+
+    // 属性面包屑的添加
+    //@kofeine 2022/08/05 23:45
+    attrChange(attr, attrValue) {
+      // console.log("儿子给我的", attr, attrValue);
+      //整理属性
+      let props = `${attr.attrId}:${attrValue}:${attr.attrName}`;
+      //先去重
+      if (this.searchParams.props.indexOf(props) === -1)
+        this.searchParams.props.push(props); //参数中的props是数组
+      //发送请求
+      this.$store.dispatch("search/getSearchList", this.searchParams);
+    },
+    trademarkChange(tm) {
+      // console.log("儿子给我的", tm);
+      // 重新整理请求参数
+      this.searchParams.trademark = `${tm.tmId}:${tm.tmName}`;
+      // console.log(this.searchParams.trademark);
+      //再次发送请求
+      this.$store.dispatch("search/getSearchList", this.searchParams);
+    },
     getSearch() {
       this.$store.dispatch("search/getSearchList", this.searchParams);
       this.searchParams.category1Id = "";
@@ -196,11 +245,30 @@ export default {
         this.$router.push({ name: "search", query: this.$route.query });
       }
     },
+    //品牌 面包屑删除操作
+    deleteTradeMark() {
+      this.searchParams.trademark = undefined;
+      this.$store.dispatch("search/getSearchList", this.searchParams);
+      //这里对应的面包屑必须用 v-if ，因为展示数据要对字符串做 split 操作，v-show 会把元素渲染出来但通过css隐藏，
+      //因此一旦将这里的 this.searchParams.trademark 置为 undefined ，就会报错
+    },
   },
   computed: {
     //Search 模块动态展示
     //@kofeine 2022/08/03 22:35
     ...mapGetters("search", ["goodList"]),
+    isOne() {
+      return this.searchParams.order.indexOf("1") !== -1;
+    },
+    isTwo() {
+      return this.searchParams.order.indexOf("2") !== -1;
+    },
+    isAsc() {
+      return this.searchParams.order.indexOf("asc") !== -1;
+    },
+    isDesc() {
+      return this.searchParams.order.indexOf("desc") !== -1;
+    },
   },
   updated() {
     console.log(this.$route);
