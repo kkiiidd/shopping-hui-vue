@@ -78,7 +78,7 @@ export default {
     return {
       cur: "active-item",
       curIndex: -1,
-      typeShow: true,
+      typeShow: false,
     };
   },
   methods: {
@@ -90,8 +90,8 @@ export default {
     }, 50),
     leave() {
       this.curIndex = -1;
-      //搜索页的话离开之后隐藏分类导航
-      if (this.$route.path.slice(0, 7) === "/search") {
+      //非首页的话离开之后隐藏分类导航
+      if (this.$route.path.split("/")[1] !== "home") {
         this.typeShow = false;
       }
     },
@@ -135,10 +135,10 @@ export default {
     },
   },
 
-  //判断是首页还是搜索页，搜索页需要先隐藏分类导航
+  //判断是首页还是非首页，是首页就显示分类导航
   mounted() {
-    if (this.$route.path === "/search") {
-      this.typeShow = false;
+    if (this.$route.path.split("/")[1] === "home") {
+      this.typeShow = true;
     }
   },
 
