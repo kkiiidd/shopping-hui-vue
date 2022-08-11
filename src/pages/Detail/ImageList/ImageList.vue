@@ -38,7 +38,6 @@ export default {
   watch: {
     skuImageList(newValue, oldValue) {
       this.$nextTick(() => {
-        console.log("next");
         new Swiper(this.$refs.cur, {
           navigation: {
             nextEl: ".swiper-button-next",

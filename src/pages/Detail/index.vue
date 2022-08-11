@@ -42,7 +42,7 @@
                 </div>
                 <div class="price">
                   <i>¥</i>
-                  <em>5299</em>
+                  <em>{{ skuInfo.price }}</em>
                   <span>降价通知</span>
                 </div>
                 <div class="remark">
@@ -121,7 +121,7 @@
                 >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addShopCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -366,6 +366,11 @@ import Zoom from "./Zoom/Zoom";
 
 export default {
   name: "Detail",
+
+  components: {
+    ImageList,
+    Zoom,
+  },
   beforeMount() {
     this.$store.dispatch("detail/getGoodInfo", this.$route.params.skuid);
   },
@@ -374,7 +379,35 @@ export default {
       amount: 1,
     };
   },
+  computed: {
+    ...mapState("detail", ["goodInfo"]),
+    ...mapGetters("detail", ["categoryView", "skuInfo", "spuSaleAttrList"]),
+    skuImageList() {
+      return this.skuInfo.skuImageList || [];
+    },
+  },
   methods: {
+    // 加入购物车
+    //@kofeine 2022/08/10 09:48
+    async addShopCart() {
+      try {
+        await this.$store.dispatch("detail/addShopCart", {
+          skuId: this.$route.params.skuid,
+          skuNum: this.amount,
+        });
+        sessionStorage.setItem("skuInfo", JSON.stringify(this.skuInfo));
+        sessionStorage.setItem(
+          "spuSaleAttrList",
+          JSON.stringify(this.spuSaleAttrList)
+        );
+        this.$router.push({
+          name: "addcartsuccess",
+          query: { skuNum: this.amount },
+        });
+      } catch (error) {
+        alert("加入购物车失败", error);
+      }
+    },
     //用户手动输入数据，对输入进行一定的控制（字符串，负数）
     inputAmount(e) {
       console.log(e);
@@ -395,17 +428,6 @@ export default {
       });
       av.isChecked = 1;
     },
-  },
-  computed: {
-    ...mapState("detail", ["goodInfo"]),
-    ...mapGetters("detail", ["categoryView", "skuInfo", "spuSaleAttrList"]),
-    skuImageList() {
-      return this.skuInfo.skuImageList || [];
-    },
-  },
-  components: {
-    ImageList,
-    Zoom,
   },
 };
 </script>

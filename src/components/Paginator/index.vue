@@ -69,7 +69,7 @@ export default {
       let { pageNo, pageSize, totalPage, continues } = this;
       let start = 0,
         end = 0;
-      console.log(totalPage);
+      // console.log(totalPage);
       if (totalPage < continues) {
         //总页数比连续展示个数小
         start = 1;
