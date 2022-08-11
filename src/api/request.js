@@ -2,11 +2,12 @@
 import axios from "axios";
 
 import nprogress from "nprogress";
-
 //引入进度条样式
 //@kofeine 2022/07/27 16:47
 import "nprogress/nprogress.css";
 
+//引入store仓库，以在detail中获取uuid
+import store from "@/store";
 
 //封装axios
 /*
@@ -21,7 +22,11 @@ const request = axios.create({
 })
 
 request.interceptors.request.use(config => {
-
+    //将uuid_token加入请求头
+    //@kofeine 2022/08/11 16:40
+    if (store.state.detail.uuid_token) {
+        config.headers['userTempId'] = store.state.detail.uuid_token;//userTempId为后端约定
+    }
     nprogress.start();
     return config;
 })

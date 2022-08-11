@@ -31,3 +31,12 @@ export const reqGoodInfo = (skuid) => request({
     url: `/item/${skuid}`,
     method: 'GET'
 })
+
+export const reqAddShopCart = (skuId, skuNum) => request({
+    url: `/cart/addToCart/${skuId}/${skuNum}`,
+    method: "post"
+})
+export const reqCartList = () => request({
+    url: '/cart/cartList',
+    method: 'get'
+})

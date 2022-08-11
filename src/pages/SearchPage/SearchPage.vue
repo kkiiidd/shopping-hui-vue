@@ -178,7 +178,7 @@ export default {
     //属性面包屑的删除
     //@kofeine 2022/08/05 23:45
     deleteAttr(index) {
-      console.log(index);
+      // console.log(index);
       this.searchParams.props.splice(index, 1);
       this.$store.dispatch("search/getSearchList", this.searchParams);
     },
@@ -220,7 +220,7 @@ export default {
       this.$store.dispatch("search/getSearchList", this.searchParams);
       //不能影响原本的 params 参数
       if (this.$route.params) {
-        console.log(this.$route);
+        // console.log(this.$route);
         this.$router.push({ name: "search", params: this.$route.params });
       }
     },
@@ -264,7 +264,7 @@ export default {
     },
   },
   updated() {
-    console.log(this.$route);
+    // console.log(this.$route);
   },
   beforeMount() {
     //必须在 挂载 完毕前执行一次 @kofeine 2022/08/03 23:02
