@@ -27,6 +27,10 @@ request.interceptors.request.use(config => {
     if (store.state.detail.uuid_token) {
         config.headers['userTempId'] = store.state.detail.uuid_token;//userTempId为后端约定
     }
+    if (store.state.user.token) {
+        console.log('config ING');
+        config.headers['token'] = store.state.user.token;
+    }
     nprogress.start();
     return config;
 })
