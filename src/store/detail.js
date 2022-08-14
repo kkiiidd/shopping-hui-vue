@@ -13,6 +13,7 @@ const actions = {
         }
     },
     async addShopCart({ commit }, { skuId, skuNum }) {
+        console.log('addShopCart', { skuId, skuNum });
         let result = await (reqAddShopCart(skuId, skuNum))
         if (result.code === 200) return 'success';
         else return Promise.reject(new Error('fail'));

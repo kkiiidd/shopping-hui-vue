@@ -5,10 +5,18 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="!userName">
             <span>请</span>
-            <a href="###">登录</a>
-            <a href="###" class="register">免费注册</a>
+            <a href="javascript:void(0)" @click="toLogin">登录</a>
+            <a href="javascript:void(0)" class="register" @click="toRegister"
+              >免费注册</a
+            >
+          </p>
+          <p v-else>
+            <a href="javascript:void(0)">{{ userName }}</a>
+            <a href="javascript:void(0)" class="register" @click="logout"
+              >退出登录</a
+            >
           </p>
         </div>
         <div class="typeList">
@@ -59,14 +67,36 @@ export default {
       input: "",
     };
   },
+  computed: {
+    userName() {
+      console.log(this.$store.state.user.userName);
+      return this.$store.state.user.userName;
+    },
+  },
   mounted() {
-    //挂载后给bus加 clearKeyword 的事件监听
+    //挂载后给 bus加 clearKeyword 的事件监听
     this.$bus.$on("clearKeyword", () => {
       console.log("clear");
       this.input = "";
     });
   },
   methods: {
+    //退出登录
+    async logout() {
+      try {
+        await this.$store.dispatch("user/logout");
+        localStorage.removeItem("TOKEN");
+        this.$router.push("/home");
+      } catch (error) {
+        alert(error);
+      }
+    },
+    toLogin() {
+      this.$router.push("/login");
+    },
+    toRegister() {
+      this.$router.push("/register");
+    },
     toHome() {
       this.$router.push("/home");
     },
