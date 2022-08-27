@@ -36,7 +36,7 @@ const actions = {
     async confirmLogin({ commit }, { phone, password }) {
         const result = await reqLogin(phone, password);
         if (result.code === 200) {
-            console.log(result);
+            // console.log(result);
             //先commit一次，因为state中的token已经执行过一次getToken()，为空，如果不改他，他就一直为空
             //先把它改为获取到的token
             commit('CONFIRMLOGIN', result.data.token);

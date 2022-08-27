@@ -47,7 +47,8 @@ router.beforeEach(async (to, from, next) => {
   //获取仓库中的token与用户名
   const token = store.state.user.token;
   const userName = store.state.user.userName;
-  console.log(to);
+  // console.log(to);
+  let toPath = to.path;
   if (to.path == '/login') {
     if (token) {
       //已登录，不跳转到登录页
@@ -72,12 +73,29 @@ router.beforeEach(async (to, from, next) => {
           //出现异常，获取不到用户信息，重新登录
           //先下线
           await store.dispatch('user/logout');
+          alert('登录失败，请重新登录')
           next('/login');
         }
       }
     } else {
-      //未登录，暂未处理，先放行
-      next();
+      //未登录
+      //（全局守卫）受限制路由，跳转至登录页面，带上redirect参数
+      //@kofeine 2022/08/26 18:00
+      // console.log(toPath);
+      if (toPath.indexOf('/shopcart') != -1 ||
+        toPath.indexOf('/addcartsuccess') != -1 ||
+        toPath.indexOf('/trade') != -1 ||
+        toPath.indexOf('/paySuccess') != -1 ||
+        toPath.indexOf('/center') != -1 ||
+        toPath.indexOf('/pay') != -1) {
+        console.log(toPath);
+        next('/login?redirect=' + toPath);
+      }
+      else {
+        console.log(toPath);
+        next();
+
+      }
     }
 
   }
