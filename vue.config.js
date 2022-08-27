@@ -15,6 +15,6 @@ module.exports = defineConfig({
   },
   productionSourceMap: false,
   publicPath: process.env.NODE_ENV === 'production'
-    ? '/shopping-hui-vue/'
+    ? '/sph/'
     : '/'
 });
