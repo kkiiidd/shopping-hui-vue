@@ -13,5 +13,8 @@ module.exports = defineConfig({
       }
     }
   },
-  productionSourceMap: false
+  productionSourceMap: false,
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/shopping-hui-vue/'
+    : '/'
 });
