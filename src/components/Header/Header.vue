@@ -20,9 +20,9 @@
           </p>
         </div>
         <div class="typeList">
-          <a href="###">我的订单</a>
-          <a href="###">我的购物车</a>
-          <a href="###">我的尚品汇</a>
+          <a @click="toOrder">我的订单</a>
+          <a @click="toShopcart">我的购物车</a>
+          <a @click="toCenter">我的尚品汇</a>
           <a href="###">尚品汇会员</a>
           <a href="###">企业采购</a>
           <a href="###">关注尚品汇</a>
@@ -69,7 +69,7 @@ export default {
   },
   computed: {
     userName() {
-      console.log(this.$store.state.user.userName);
+      // console.log(this.$store.state.user.userName);
       return this.$store.state.user.userName;
     },
   },
@@ -99,6 +99,15 @@ export default {
     },
     toHome() {
       this.$router.push("/home");
+    },
+    toShopcart() {
+      this.$router.push("/shopcart");
+    },
+    toOrder() {
+      this.$router.push("/center/myOrder");
+    },
+    toCenter() {
+      this.$router.push("/center");
     },
 
     search() {

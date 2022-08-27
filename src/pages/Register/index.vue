@@ -11,7 +11,7 @@
       <div class="content">
         <label>手机号:</label>
         <input type="text" placeholder="请输入你的手机号" v-model="phone" />
-        <span class="error-msg">错误提示信息</span>
+        <span class="error-msg" v-show="!isPhone && phone">手机号格式有误</span>
       </div>
       <div class="content">
         <label>验证码:</label>
@@ -22,26 +22,36 @@
           src="http://182.92.128.115/api/user/passport/code"
           alt="code"
         /> -->
-        <span class="error-msg">错误提示信息</span>
+        <span class="error-msg" v-show="!isCode && code"
+          >验证码只包含6位数字</span
+        >
       </div>
       <div class="content">
         <label>登录密码:</label>
         <input
-          type="text"
+          type="password"
           placeholder="请输入你的登录密码"
           v-model="password"
         />
-        <span class="error-msg">错误提示信息</span>
+        <span class="error-msg" v-show="!isPassword && password"
+          >密码只支持6-20位数字，英文大小写及组合</span
+        >
       </div>
       <div class="content">
         <label>确认密码:</label>
-        <input type="text" placeholder="请输入确认密码" v-model="password1" />
-        <span class="error-msg">错误提示信息</span>
+        <input
+          type="password"
+          placeholder="请输入确认密码"
+          v-model="password1"
+        />
+        <span class="error-msg" v-show="!isPassword1 && password1"
+          >密码前后不一致</span
+        >
       </div>
       <div class="controls">
-        <input name="m1" type="checkbox" />
+        <input name="m1" type="checkbox" v-model="isCheck" />
         <span>同意协议并注册《尚品汇用户协议》</span>
-        <span class="error-msg">错误提示信息</span>
+        <!-- <span class="error-msg">错误提示信息</span> -->
       </div>
       <div class="btn">
         <button @click="confirmRegister">完成注册</button>
@@ -75,7 +85,40 @@ export default {
       code: "",
       password: "",
       password1: "",
+      isPhone: false,
+      isCode: false,
+      isPassword: false,
+      isPassword1: false,
+      isCheck: false,
     };
+  },
+  watch: {
+    phone: function () {
+      const reg = /^(?:(?:\+|00)86)?1[3-9]\d{9}$/;
+      if (reg.test(this.phone)) this.isPhone = true;
+      else this.isPhone = false;
+    },
+    code: function () {
+      const reg = /^\d{6}$/;
+      if (reg.test(this.code)) this.isCode = true;
+      else this.isCode = false;
+    },
+    password: function () {
+      const reg = /^[0-9A-Za-z]{6,20}$/;
+      if (reg.test(this.password)) this.isPassword = true;
+      else this.isPassword = false;
+    },
+    password1: function () {
+      if (this.password === this.password1) this.isPassword1 = true;
+      else this.isPassword1 = false;
+    },
+  },
+  computed: {
+    isFinish() {
+      const reg =
+        this.isPhone && this.isCode && this.isPassword && this.isPassword1;
+      return this.isCheck && reg;
+    },
   },
   methods: {
     async getCode(phone) {
@@ -89,17 +132,20 @@ export default {
     async confirmRegister() {
       const { phone, code, password, password1 } = this;
       try {
-        phone &&
-          code &&
-          password === password1 &&
-          (await this.$store.dispatch("user/confirmRegister", {
+        if (phone && code && this.isFinish) {
+          await this.$store.dispatch("user/confirmRegister", {
             phone: this.phone,
             code: this.code,
             password: this.password,
-          }));
-        this.$router.push("/login");
+          });
+          this.$alert("您已注册成功!", "完成");
+          this.$router.push("/login");
+        } else {
+          if (this.isCheck) this.$alert("输入有误，请检查并重新输入", "错误");
+          else this.$alert("未勾选同意协议", "错误");
+        }
       } catch (error) {
-        alert(error);
+        this.$alert("账号可能已被注册，或验证码错误", "注册失败");
       }
     },
   },

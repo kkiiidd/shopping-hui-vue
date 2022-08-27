@@ -1,0 +1,35 @@
+[
+    {
+        "consignee":"叶子",
+        "fullAddress":"广东省东莞市寮步镇龙泉路1号",
+        "id":"1",
+        "isDefault":"1",
+        "phoneNum":"13700000000",
+        "provinveId":"1",
+        "regionId":"1",
+        "userAddress":"广东省东莞市寮步镇龙泉路1号",
+        "userId":"1"
+    },
+    {
+        "consignee":"袁媛",
+        "fullAddress":"广西省桂林市",
+        "id":"2",
+        "isDefault":"0",
+        "phoneNum":"13711945216",
+        "provinveId":"2",
+        "regionId":"2",
+        "userAddress":"广西省桂林市",
+        "userId":"2"
+    },
+    {
+        "consignee":"沈欣",
+        "fullAddress":"安徽省合肥市",
+        "id":"3",
+        "isDefault":"0",
+        "phoneNum":"18652421549",
+        "provinveId":"3",
+        "regionId":"3",
+        "userAddress":"安徽省合肥市",
+        "userId":"3"
+    }
+]

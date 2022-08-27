@@ -26,16 +26,16 @@
               <div class="input-text clearFix">
                 <span class="pwd"></span>
                 <input
-                  type="text"
+                  type="password"
                   placeholder="请输入密码"
                   v-model="password"
                 />
               </div>
               <div class="setting clearFix">
-                <label class="checkbox inline">
+                <!-- <label class="checkbox inline">
                   <input name="m1" type="checkbox" value="2" checked="" />
                   自动登录
-                </label>
+                </label> -->
                 <span class="forget">忘记密码？</span>
               </div>
               <!-- 阻止默认事件 -->
@@ -91,10 +91,11 @@ export default {
       const { phone, password } = this;
       try {
         await this.$store.dispatch("user/confirmLogin", { phone, password });
-
-        this.$router.push("/home");
+        let toPath = this.$route.query.redirect || "/home";
+        // console.log(toPath);
+        this.$router.push(toPath);
       } catch (error) {
-        alert(error);
+        alert("用户名或密码错误");
       }
     },
   },

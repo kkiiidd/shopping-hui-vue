@@ -247,22 +247,26 @@ npm run lint
 
 
 
-![20220814_205959](D:\Development\GitCode\shopping-hui\20220814_205959.gif)
+![20220814_205959](./20220814_205959.gif)
 
 商品详情页
 
 
 
-
+![aeey1-1z2pc](./aeey1-1z2pc.gif)
 
 ![20220814_210608](./20220814_210608.gif)
 
 分类导航+搜索+商品属性过滤
 
-![20220814_220740](D:\Development\GitCode\shopping-hui\20220814_220740.gif)
+![20220814_220740](.\20220814_220740.gif)
 
-![20220814_210330](D:\Development\GitCode\shopping-hui\20220814_210330.gif)
+![20220814_210330](.\20220814_210330.gif)
 
-![aeey1-1z2pc](D:\Development\GitCode\shopping-hui\aeey1-1z2pc.gif)
+注册，登录，商品加入购物车
+
+
+
+
 
 ### 

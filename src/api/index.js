@@ -73,7 +73,32 @@ export const reqLogout = () => request({
     url: '/user/passport/logout',
     method: 'get'
 })
-export const reqAddrList = () => request({
-    url: '/user/userAddress/auth/findUserAddressList',
+export const reqAddrList = () => mockRequest({
+    url: '/address',
+    method: 'get'
+})
+//获取商品清单数据
+export const reqShopInfo = () => request({ url: `/order/auth/trade`, method: 'get' });
+
+export const reqSubmitOrder = (tradeNo, data) => {
+    // console.log(data);
+    return request({
+        url: `order/auth/submitOrder?tradeNo=${tradeNo}`,
+        method: 'post',
+        data
+    })
+};
+
+export const reqOrderInfo = (orderId) => request({
+    url: `/payment/weixin/createNative/${orderId}`,
+    method: 'get'
+})
+export const reqCheckPayStatus = (orderId) => request({
+    url: `/payment/weixin/queryPayStatus/${orderId}`,
+    method: 'get'
+})
+
+export const reqMyOrder = (page, limit) => request({
+    url: `/order/auth/${page}/${limit}`,
     method: 'get'
 })
