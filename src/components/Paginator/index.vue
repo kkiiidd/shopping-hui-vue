@@ -65,22 +65,30 @@ export default {
     totalPage() {
       return Math.ceil(this.total / this.pageSize);
     },
+
+    //计算头和尾
     startAndEnd() {
       let { pageNo, pageSize, totalPage, continues } = this;
       let start = 0,
         end = 0;
       // console.log(totalPage);
+
       if (totalPage < continues) {
         //总页数比连续展示个数小
         start = 1;
         end = totalPage;
       } else {
+        //总页数比连续展示个数大
+        //头：当前页面-连续个数的一半
         start = pageNo - Math.floor(continues / 2);
+        //尾：当前页面+连续个数的一半
         end = pageNo + Math.floor(continues / 2);
+        //当前位置在前面，头已经小于1了，头：1，尾：continues
         if (start < 1) {
           start = 1;
           end = continues;
         }
+        //当前位置在后面，为已经大于totalPage了，尾：totalPage，头：尾-continues+1
         if (end > totalPage) {
           end = totalPage;
           start = end - continues + 1;
